@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+<changeSet id="1.0" author="swt" runOnChange="true">
+        <sql>
+            CREATE TABLE person (
+            id integer NOT NULL auto_increment,
+            username varchar(45) NOT NULL,
+            first_name varchar(45) DEFAULT NULL,
+            last_name varchar(45) DEFAULT NULL,
+            birth_date varchar(45) DEFAULT NULL,
+            PRIMARY KEY (id)
+            );
+            INSERT INTO person (username,first_name,last_name) VALUES('ela', 'elavarasan', 'vaidyanathan' );
+            INSERT INTO person (username,first_name,last_name) VALUES('sundar', 'Sundar', 'Murugan' );
+        </sql>
+    </changeSet>
+</databaseChangeLog>

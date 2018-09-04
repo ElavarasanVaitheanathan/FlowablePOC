@@ -1,0 +1,61 @@
+<definitions id="definitions"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:flowable="http://flowable.org/bpmn"
+             typeLanguage="http://www.w3.org/2001/XMLSchema"
+             expressionLanguage="http://www.w3.org/1999/XPath"
+             targetNamespace="http://www.flowable.org/processdef">
+
+    <process id="InspectionRequest" name="Inspection Request Process">
+
+        <startEvent id="theStart" />
+
+        <sequenceFlow id="flow1" sourceRef="theStart" targetRef="CreateIR" />
+        <userTask id="CreateIR" name="Create Inspection Request" flowable:assignee="conadmin">
+            <documentation>
+                Create Inspection Request for DLC
+            </documentation>
+        </userTask>
+
+        <sequenceFlow id="flow2" sourceRef="CreateIR" targetRef="VerifyIRByContractorPM" />
+        <userTask id="VerifyIRByContractorPM" name="Verify Inspection Request By ContractorPM" flowable:assignee="con-pm">
+            <documentation>
+                Verify Inspection Request By ContractorPM
+            </documentation>
+        </userTask>
+
+        <sequenceFlow id="flow3" sourceRef="VerifyIRByContractorPM" targetRef="VerifyIRByConsultantEngineer" />
+        <userTask id="VerifyIRByConsultantEngineer" name="Verify Inspection Request By Consultant Engineer" flowable:assignee="consul-engineer">
+            <documentation>
+                Verify Inspection Request By Consultant Engineer
+            </documentation>
+        </userTask>
+
+        <sequenceFlow id="flow5" sourceRef="VerifyIRByConsultantEngineer" targetRef="decision" />
+        <exclusiveGateway id="decision"/>
+        <sequenceFlow sourceRef="decision" targetRef="VerifyIRByConsultantPM">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[${approved}]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow  sourceRef="decision" targetRef="VerifyIRByContractorPM">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[${!approved}]]>
+            </conditionExpression>
+        </sequenceFlow>
+
+        <userTask id="VerifyIRByConsultantPM" name="Verify Inspection Request By Consultant PM" flowable:assignee="consul-pm">
+            <documentation>
+                Verify Inspection Request By Consultant PM
+            </documentation>
+        </userTask>
+        <sequenceFlow sourceRef="VerifyIRByConsultantPM" targetRef="approveEnd"/>
+
+        <endEvent id="approveEnd"/>
+    </process>
+
+</definitions>
